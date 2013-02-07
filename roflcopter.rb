@@ -20,11 +20,14 @@ while (frame += 1)
     %|        --------------/        |
   ].each_with_index do |line, index|
     { 0 => [':LFOR', 5], (2..4) => ['L    ', 4] }.each do |key, (ch, n)|
-      n.times { |i| line.tr!(i.to_s, ch[(i + frame) % n]) } if key === index
+      n.times { |i| line.tr!(i.to_s, ch.chars.to_a[(i + frame) % n]) } if key === index
     end
 
+    copter = (line + (' ' * (cols - 31))).chars.to_a
+    (index + frame).times { copter.unshift(copter.pop) }
+
     setpos(5 + index, 0)
-    addstr (line + (' ' * (cols - 31))).chars.to_a.rotate(-(index + frame)).join
+    addstr copter.join
   end
 
   refresh
