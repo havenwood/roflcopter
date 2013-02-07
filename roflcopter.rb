@@ -6,15 +6,7 @@ include Curses
 init_screen
 curs_set(frame = 0)
 
-Thread.new do
-  ''.tap do |message|
-    message << 'say -v Alex '
-    message << 'the rofl copter says '
-    message << (['siff'] * 1000).join(' ')
-
-    system message
-  end
-end
+Thread.new { system "say -v Alex the rofl copter says #{(['siff'] * 1000).join(' ')}" }
 
 while (frame += 1)
   [
