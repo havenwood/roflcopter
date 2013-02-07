@@ -6,7 +6,7 @@ include Curses
 init_screen
 curs_set(frame = 0)
 
-Thread.new { system "say -v Alex the rofl copter says #{(['siff'] * 1000).join(' ')}" }
+Thread.new { system "say -v Alex the rofl copter says #{'siff ' * 1000}" }
 
 while (frame += 1)
   [
@@ -19,16 +19,12 @@ while (frame += 1)
     %|            I     I            |,
     %|        --------------/        |
   ].each_with_index do |line, index|
-    case index
-    when 0      then 5.times { |i| line.tr!(i.to_s, ':LFOR'[(i + frame) % 5]) }
-    when (2..4) then 4.times { |i| line.tr!(i.to_s, 'L    '[(i + frame) % 4]) }
+    { 0 => [':LFOR', 5], (2..4) => ['L    ', 4] }.each do |key, (ch, n)|
+      n.times { |i| line.tr!(i.to_s, ch[(i + frame) % n]) } if key === index
     end
 
-    copter = line << ' ' * (cols - line.length)
-    copter = copter.chars.to_a.rotate(-(index + frame))
-
     setpos(5 + index, 0)
-    addstr copter.join
+    addstr (line + (' ' * (cols - 31))).chars.to_a.rotate(-(index + frame)).join
   end
 
   refresh
