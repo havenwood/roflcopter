@@ -2,4 +2,4 @@
 
 require 'roflcopter'
 
-Roflcopter.new.fly
+Roflcopter.fly
